@@ -144,7 +144,7 @@ class ChromiumOptions(ArgOptions):
         """
         :Returns: True if the headless argument is set, else False
         """
-        return "--headless" in self._arguments
+        return "--headless" in self._arguments or "--headless=chrome" in self._arguments
 
     @headless.setter
     def headless(self, value: bool) -> None:
@@ -153,11 +153,13 @@ class ChromiumOptions(ArgOptions):
         :Args:
           value: boolean value indicating to set the headless option
         """
-        args = {"--headless"}
+        args = {"--headless=chrome"}
         if value is True:
             self._arguments.extend(args)
         else:
             self._arguments = list(set(self._arguments) - args)
+            args2 = {"--headless"}
+            self._arguments = list(set(self._arguments) - args2)
 
     def to_capabilities(self) -> dict:
         """
