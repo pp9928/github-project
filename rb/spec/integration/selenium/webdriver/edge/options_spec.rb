@@ -52,12 +52,15 @@ module Selenium
           end
         end
 
-        it 'should be able to run in headless mode with #headless!' do
+        it 'runs in headless mode' do
           options.headless!
 
           create_driver!(options: options) do |driver|
+            driver.navigate.to url_for('formPage.html')
+            expect(driver.execute_script("return window.innerWidth;")).not_to eq 800
+            expect(driver.execute_script("return window.innerHeight;")).not_to eq 600
             ua = driver.execute_script 'return window.navigator.userAgent'
-            expect(ua).to match(/HeadlessChrome/)
+            expect(ua).not_to match(/HeadlessChrome/)
           end
         end
       end

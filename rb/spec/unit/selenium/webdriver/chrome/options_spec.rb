@@ -180,7 +180,7 @@ module Selenium
         describe '#headless!' do
           it 'should add necessary command-line arguments' do
             options.headless!
-            expect(options.args).to eql(['--headless'])
+            expect(options.args).to eql(['--headless=chrome'])
           end
         end
 

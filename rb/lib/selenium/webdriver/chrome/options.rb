@@ -171,7 +171,7 @@ module Selenium
         #
 
         def headless!
-          add_argument '--headless'
+          add_argument '--headless=chrome'
         end
 
         #
