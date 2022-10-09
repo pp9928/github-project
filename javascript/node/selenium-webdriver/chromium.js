@@ -325,7 +325,7 @@ class Options extends Capabilities {
    * @return {!Options} A self reference.
    */
   headless() {
-    return this.addArguments('headless')
+    return this.addArguments('headless=chrome')
   }
 
   /**
