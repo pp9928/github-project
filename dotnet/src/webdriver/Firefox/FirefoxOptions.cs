@@ -18,8 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using OpenQA.Selenium.Remote;
+using System.Collections.ObjectModel;
 
 namespace OpenQA.Selenium.Firefox
 {
@@ -119,6 +118,14 @@ namespace OpenQA.Selenium.Firefox
             set { this.logLevel = value; }
         }
 
+        /// <summary>
+        /// Gets the list of arguments appended to the Firefox command line as a string array.
+        /// </summary>
+        public ReadOnlyCollection<string> Arguments
+        {
+            get { return this.firefoxArguments.AsReadOnly(); }
+        }
+
         public bool EnableDevToolsProtocol
         {
             get { return this.enableDevToolsProtocol; }
@@ -171,6 +178,26 @@ namespace OpenQA.Selenium.Firefox
             }
 
             this.firefoxArguments.AddRange(argumentsToAdd);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Firefox should be run in headless mode.
+        /// Defaults to <see langword="false"/>.
+        /// </summary>
+        public bool EnableHeadless
+        {
+            get { return this.firefoxArguments.Contains("--headless"); }
+            set
+            {
+                if (value)
+                {
+                    this.AddArgument("--headless");
+                }
+                else
+                {
+                    this.firefoxArguments.RemoveAll(s => s == "--headless");
+                }
+            }
         }
 
         /// <summary>

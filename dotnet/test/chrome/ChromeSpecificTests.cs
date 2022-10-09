@@ -22,5 +22,34 @@ namespace OpenQA.Selenium.Chrome
                 UseSpecCompliantProtocol = false
             });
         }
+
+        [Test]
+        public void EnableHeadless()
+        {
+            var options = new ChromeOptions
+            {
+                EnableHeadless = true
+            };
+
+            Assert.IsTrue(options.EnableHeadless);
+        }
+
+        [Test]
+        public void DisableOldHeadless()
+        {
+            var options = new ChromeOptions();
+            options.AddArgument("--headless");
+            options.EnableHeadless = false;
+            Assert.IsEmpty(options.Arguments);
+        }
+
+        [Test]
+        public void DisableNewHeadless()
+        {
+            var options = new ChromeOptions();
+            options.AddArgument("--headless=chrome");
+            options.EnableHeadless = false;
+            Assert.IsEmpty(options.Arguments);
+        }
     }
 }

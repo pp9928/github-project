@@ -19,9 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
-using OpenQA.Selenium.Remote;
 
 namespace OpenQA.Selenium.Chromium
 {
@@ -387,6 +385,26 @@ namespace OpenQA.Selenium.Chromium
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether Chromium should be run in headless mode.
+        /// Defaults to <see langword="false"/>.
+        /// </summary>
+        public bool EnableHeadless
+        {
+            get { return this.arguments.Exists(isHeadless); }
+            set
+            {
+                if (value)
+                {
+                    this.AddArgument("--headless=chrome");
+                }
+                else
+                {
+                    this.arguments.RemoveAll(s => isHeadless(s));
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds a preference for the user-specific profile or "user data directory."
         /// If the specified preference already exists, it will be overwritten.
         /// </summary>
@@ -546,6 +564,11 @@ namespace OpenQA.Selenium.Chromium
         /// <param name="capabilities">The capabilities to add.</param>
         protected virtual void AddVendorSpecificChromiumCapabilities(IWritableCapabilities capabilities)
         {
+        }
+
+        private bool isHeadless(string arg)
+        {
+            return arg.Contains("headless");
         }
 
         private Dictionary<string, object> BuildChromeOptionsDictionary()
