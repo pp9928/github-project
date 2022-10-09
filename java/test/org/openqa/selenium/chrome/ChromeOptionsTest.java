@@ -101,6 +101,34 @@ public class ChromeOptionsTest {
   }
 
   @Test
+  public void canSetHeadless() {
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.setHeadless(true);
+    Map<String, Object> capabilities = (Map<String, Object>) chromeOptions.getCapability(ChromeOptions.CAPABILITY);
+    assertThat(capabilities.get("args")).isEqualTo(List.of("--headless=chrome"));
+  }
+
+  @Test
+  public void canUnSetOldHeadless() {
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.addArguments("--headless");
+    chromeOptions.setHeadless(false);
+    Map<String, Object> capabilities = (Map<String, Object>) chromeOptions.getCapability(ChromeOptions.CAPABILITY);
+    List<String> args = (List<String>) capabilities.get("args");
+    assertThat(args.isEmpty()).isTrue();
+  }
+
+  @Test
+  public void canUnSetNewHeadless() {
+    ChromeOptions chromeOptions = new ChromeOptions();
+    chromeOptions.addArguments("--headless=chrome");
+    chromeOptions.setHeadless(false);
+    Map<String, Object> capabilities = (Map<String, Object>) chromeOptions.getCapability(ChromeOptions.CAPABILITY);
+    List<String> args = (List<String>) capabilities.get("args");
+    assertThat(args.isEmpty()).isTrue();
+  }
+
+  @Test
   public void canAddSequentialTimeouts() {
     ChromeOptions chromeOptions = new ChromeOptions();
     chromeOptions.setImplicitWaitTimeout(Duration.ofSeconds(1));
@@ -211,7 +239,7 @@ public class ChromeOptionsTest {
   public void isW3CSafe() {
     Map<String, Object> converted = new ChromeOptions()
       .setBinary("some/path")
-      .addArguments("--headless")
+      .setHeadless(true)
       .setLogLevel(ChromeDriverLogLevel.INFO)
       .asMap();
 

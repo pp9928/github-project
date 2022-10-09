@@ -188,8 +188,9 @@ public class ChromiumOptions<T extends ChromiumOptions<?>> extends AbstractDrive
 
   public T setHeadless(boolean headless) {
     args.remove("--headless");
+    args.remove("--headless=chrome");
     if (headless) {
-      args.add("--headless");
+      args.add("--headless=chrome");
     }
     return (T) this;
   }
