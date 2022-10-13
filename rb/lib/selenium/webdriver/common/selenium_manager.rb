@@ -17,21 +17,27 @@
 # specific language governing permissions and limitations
 # under the License.
 
-require 'selenium/webdriver/chrome/service'
-
 module Selenium
   module WebDriver
-    module Edge
-      class Service < Selenium::WebDriver::Chrome::Service
-        DEFAULT_PORT = 9515
-        BROWSER_NAME = 'edge'
-        EXECUTABLE = 'msedgedriver'
-        MISSING_TEXT = <<~ERROR
-          Unable to find msedgedriver. Please download the server from
-          https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/ and place it somewhere on your PATH.
-        ERROR
-        SHUTDOWN_SUPPORTED = true
-      end # Service
-    end # Edge
+    class SeleniumManager
+      BIN_PATH = "../../../../bin"
+
+      def self.driver_location(browser_name)
+        path = File.expand_path(BIN_PATH, __dir__)
+        path << if Platform.windows?
+                  '/windows/selenium-manager.exe'
+                elsif Platform.mac?
+                  '/macos/selenium-manager'
+                elsif Platform.linux?
+                  '/linux/selenium-manager'
+                end
+        path = File.expand_path(path, __FILE__)
+        command = "#{path} --browser #{browser_name}"
+        WebDriver.logger.debug("Executing Process #{command}")
+        location = `#{command}`.split("\t").last.strip
+        WebDriver.logger.debug("Driver found at #{location}")
+        location
+      end
+    end # SeleniumManager
   end # WebDriver
 end # Selenium

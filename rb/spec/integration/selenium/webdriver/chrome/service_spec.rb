@@ -17,21 +17,19 @@
 # specific language governing permissions and limitations
 # under the License.
 
-require 'selenium/webdriver/chrome/service'
+require_relative '../spec_helper'
 
 module Selenium
   module WebDriver
-    module Edge
-      class Service < Selenium::WebDriver::Chrome::Service
-        DEFAULT_PORT = 9515
-        BROWSER_NAME = 'edge'
-        EXECUTABLE = 'msedgedriver'
-        MISSING_TEXT = <<~ERROR
-          Unable to find msedgedriver. Please download the server from
-          https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/ and place it somewhere on your PATH.
-        ERROR
-        SHUTDOWN_SUPPORTED = true
-      end # Service
-    end # Edge
+    module Chrome
+      describe Service, exclusive: {browser: :chrome} do
+        it 'auto uses chromedriver' do
+          allow(Platform).to receive(:find_binary)
+          service = Service.new
+          service_manager = service.launch
+          expect(service_manager.uri).to be_a(URI)
+        end
+      end
+    end # Chrome
   end # WebDriver
 end # Selenium

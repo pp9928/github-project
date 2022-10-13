@@ -22,6 +22,7 @@ module Selenium
     module Chrome
       class Service < WebDriver::Service
         DEFAULT_PORT = 9515
+        BROWSER_NAME = 'chrome'
         EXECUTABLE = 'chromedriver'
         MISSING_TEXT = <<~ERROR
           Unable to find chromedriver. Please download the server from

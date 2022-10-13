@@ -22,6 +22,7 @@ module Selenium
     module Firefox
       class Service < WebDriver::Service
         DEFAULT_PORT = 4444
+        BROWSER_NAME = 'firefox'
         EXECUTABLE = 'geckodriver'
         MISSING_TEXT = <<~ERROR
           Unable to find Mozilla geckodriver. Please download the server from

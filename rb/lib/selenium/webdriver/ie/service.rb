@@ -22,6 +22,7 @@ module Selenium
     module IE
       class Service < WebDriver::Service
         DEFAULT_PORT = 5555
+        BROWSER_NAME = 'ie'
         EXECUTABLE = 'IEDriverServer'
         MISSING_TEXT = <<~ERROR
           Unable to find IEDriverServer. Please download the server from

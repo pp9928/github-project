@@ -80,9 +80,7 @@ module Selenium
       end
 
       def launch
-        sm = ServiceManager.new(self)
-        sm.start
-        sm
+        ServiceManager.new(self).tap(&:start)
       end
 
       def shutdown_supported
@@ -100,6 +98,7 @@ module Selenium
       def binary_path(path = nil)
         path = path.call if path.is_a?(Proc)
         path ||= Platform.find_binary(self.class::EXECUTABLE)
+        path ||= SeleniumManager.driver_location(self.class::BROWSER_NAME)
 
         raise Error::WebDriverError, self.class::MISSING_TEXT unless path
 
